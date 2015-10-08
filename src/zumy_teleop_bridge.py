@@ -16,7 +16,7 @@ class ZTBridge():
     self.still = t 
     self.twist = self.still
     self.lock = threading.Condition()
-    self.pub = rospy.Publisher("/odroid6/cmd_vel", Twist, queue_size = 5)
+    self.pub = rospy.Publisher("/odroid6/cmd_vel", Twist, queue_size = 1)
     rospy.init_node("zumy_teleop_bridge", anonymous=True)
     rospy.Subscriber("/turtle1/cmd_vel/", Twist, self.teleopCB)
 
@@ -36,7 +36,7 @@ class ZTBridge():
   
   
   def run(self):
-    rate = rospy.Rate(20) #"/turtle1/cmd_vel/" is published at 30Hz, so it will overwrite "/odroid6/cmd_vel"   
+    rate = rospy.Rate(10) #"/turtle1/cmd_vel/" is published at 30Hz, so it will overwrite "/odroid6/cmd_vel"   
     while not rospy.is_shutdown(): 
       self.pub.publish(self.twist)
       self.init_twist()
